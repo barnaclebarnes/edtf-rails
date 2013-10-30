@@ -27,14 +27,16 @@ Jeweler::RubygemsDotOrgTasks.new
 
 require 'rspec/core'
 require 'rspec/core/rake_task'
-RSpec::Core::RakeTask.new(:spec) do |spec|
-  spec.pattern = FileList['spec/**/*_spec.rb']
-end
 
-RSpec::Core::RakeTask.new(:rcov) do |spec|
-  spec.pattern = 'spec/**/*_spec.rb'
-  spec.rcov = true
+RSpec::Core::RakeTask.new(:spec, :tag) do |t, task_args|
+  t.pattern = FileList['spec/**/*_spec.rb']
+  t.rspec_opts = "--format documentation --color --debug"
+  t.rspec_opts += " --tag #{task_args[:tag]}" unless task_args[:tag].nil?
 end
+# RSpec::Core::RakeTask.new(:rcov) do |spec|
+#   spec.pattern = 'spec/**/*_spec.rb'
+#   spec.rcov = true
+# end
 
 task :default => :spec
 
