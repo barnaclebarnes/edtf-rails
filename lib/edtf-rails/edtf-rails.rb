@@ -30,14 +30,18 @@ module EdtfRails
     validates_format_of edtf_attributes, :with => EDTF_STRING_FORMAT, :allow_nil => true
 
     edtf_attributes.each do |d|
+
+      # getters
       define_method(d) do
         read_attribute(d) && (EDTF.parse(read_attribute(d)) || read_attribute(d)) #if the format is not EDTF compatible the string will be returned (validation call this getter and need a value)
       end
 
+      # setters
       define_method("#{d}=") do |edtf_date|
         edtf_date = edtf_date.edtf if edtf_date.is_a? Date
         write_attribute(d,edtf_date)
       end
+      
     end
 
     # Include instance methods and class methods

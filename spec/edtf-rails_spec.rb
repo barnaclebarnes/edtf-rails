@@ -95,7 +95,7 @@ describe EdtfRailsTest::Model, :wip => true do
           @obj.save!
         end
 
-        shared_examples "getters return a Date object but a string is stored in the db" do
+        shared_examples "getter return a Date object but a string is stored in the db" do
           describe "#dob" do
             subject { @obj.dob }
             specify { should be_a Date }
@@ -104,20 +104,22 @@ describe EdtfRailsTest::Model, :wip => true do
             expect(@obj.read_attribute(:dob)).to be_a String
           end
         end
-        context "when new_date is a Date object: Date.today" do
+        context "when new_date is Date.new(2001,9,10) " do
           let(:new_date) { Date.new(2001,9,10) }
-          it_should_behave_like "getters return a Date object but a string is stored in the db"
-          specify { expect(@obj.dob).to eql Date.new(2001,9,10) }
+          it_should_behave_like "getter return a Date object but a string is stored in the db"
+          its(:dob) {should eql Date.new(2001,9,10) }
         end
-        context "when new_date is a String object: Date.today.to_s" do
+        context "when new_date is the string '2001-09-10'" do
           let(:new_date) { '2001-09-10' }
-          it_should_behave_like "getters return a Date object but a string is stored in the db"
-          specify { expect(@obj.dob).to eql Date.new(2001,9,10) }
+          it_should_behave_like "getter return a Date object but a string is stored in the db"
+          its(:dob) {should eql Date.new(2001,9,10) }
         end
-        context "when new_date is a String object: Date.today.to_s" do
+        context "when new_date is the string '2001-09'" do
           let(:new_date) { '2001-09' }
-          it_should_behave_like "getters return a Date object but a string is stored in the db"
-          specify { expect(@obj.dob.precision).to be :month }
+          it_should_behave_like "getter return a Date object but a string is stored in the db"
+          describe "dob precision" do
+            specify { expect(@obj.dob.precision).to be :month }
+          end
         end
 
 
