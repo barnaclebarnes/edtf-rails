@@ -74,7 +74,7 @@ describe EdtfRails do
 end
 
 EdtfRailsTest.define_test_model_class({:attributes => [:dob,:dod]})
-describe EdtfRailsTest::Model, :wip => true do
+describe EdtfRailsTest::Model do
 
   before(:each) do
     EdtfRailsTest.define_test_model_class({:attributes => described_class.edtf_attributes}) #define model again so that the underline table get recreated with the correct columns
@@ -82,6 +82,16 @@ describe EdtfRailsTest::Model, :wip => true do
   end
 
   subject { @obj }
+
+  shared_examples "dob getter return a Date object but a string is stored in the db" do
+    describe "#dob" do
+      subject { @obj.dob }
+      specify { should be_a Date }
+    end
+    it "has a string as value in the db" do
+      expect(@obj.read_attribute(:dob)).to be_a String
+    end
+  end
 
   describe "#new" do
     context "when initialized with no params" do
@@ -95,43 +105,32 @@ describe EdtfRailsTest::Model, :wip => true do
           @obj.save!
         end
 
-        shared_examples "getter return a Date object but a string is stored in the db" do
-          describe "#dob" do
-            subject { @obj.dob }
-            specify { should be_a Date }
-          end
-          it "has a string as value in the db" do
-            expect(@obj.read_attribute(:dob)).to be_a String
-          end
-        end
         context "when new_date is Date.new(2001,9,10) " do
           let(:new_date) { Date.new(2001,9,10) }
-          it_should_behave_like "getter return a Date object but a string is stored in the db"
+          it_should_behave_like "dob getter return a Date object but a string is stored in the db"
           its(:dob) {should eql Date.new(2001,9,10) }
         end
         context "when new_date is the string '2001-09-10'" do
           let(:new_date) { '2001-09-10' }
-          it_should_behave_like "getter return a Date object but a string is stored in the db"
+          it_should_behave_like "dob getter return a Date object but a string is stored in the db"
           its(:dob) {should eql Date.new(2001,9,10) }
         end
         context "when new_date is the string '2001-09'" do
           let(:new_date) { '2001-09' }
-          it_should_behave_like "getter return a Date object but a string is stored in the db"
+          it_should_behave_like "dob getter return a Date object but a string is stored in the db"
           describe "dob precision" do
             specify { expect(@obj.dob.precision).to be :month }
           end
         end
 
-
-
       end
     end
     context "when initialized with" do
-      context "inaccurate dob 1995" do
+      context "year precise dob 1995" do
         let(:params) { {:dob => "1995" } }
         specify { should be_valid }
       end
-      context "inaccurate dob 1995-11" do
+      context "month precise dob 1995-11" do
         let(:params) { {:dob => "1995-11" } }
         specify { should be_valid }
       end
@@ -146,10 +145,10 @@ describe EdtfRailsTest::Model, :wip => true do
           let(:params) { {:dob => "2001-03-25",:dod => "2001-99-25" } }
           specify { should_not be_valid }
         end
-        context "and dod 2013-11" do
+        context "and month precise dod 2013-11" do
           let(:params) { {:dob => "2001-03-25",:dod => "2013-11" } }
-          its(:dod) {should be_a Date }
           its(:dob) {should be_a Date }
+          its(:dod) {should be_a Date }
           describe "dob precision" do
             specify { expect(@obj.dob.precision).to be :day  }
           end
@@ -161,4 +160,77 @@ describe EdtfRailsTest::Model, :wip => true do
     end
   end
 
+  describe "#dob_? atomic getters" do
+    context "when initialized with dob 1995-12-24" do
+      let(:params) { {:dob => "1995-12-24" } }
+      its(:dob_y) { should == '1995'}
+      its(:dob_m) { should == '12'}
+      its(:dob_d) { should == '24'}
+      context "and dod 1935-02-14" do
+        let(:params) { {:dob => "1995-12-24", :dod => "1935-02-14" } }
+        its(:dod_y) { should == '1935'}
+        its(:dod_m) { should == '02'}
+        its(:dod_d) { should == '14'}
+      end
+    end
+    context "when initialized with dob 1995-12" do
+      let(:params) { {:dob => "1995-12" } }
+      its(:dob_y) { should == '1995'}
+      its(:dob_m) { should == '12'}
+      its(:dob_d) { should be_nil}
+    end
+    context "when initialized with dob 1995" do
+      let(:params) { {:dob => "1995" } }
+      its(:dob_y) { should == '1995'}
+      its(:dob_m) { should be_nil}
+      its(:dob_d) { should be_nil}
+    end
+  end
+
+
+  describe "#dob_?= atomic setters effect", :wip => true do
+    context "when initialized with no params" do
+      let(:params) { nil }
+      describe "#dob_y = 1976" do
+        before(:each) do
+          @obj.dob_y = '1976'
+        end
+        its(:dob) { should be_nil}
+        its(:dob_y) { should == '1976'}
+        context "after saving" do
+          before(:each) do
+            @obj.save
+          end
+          it_should_behave_like "dob getter return a Date object but a string is stored in the db"
+          describe "dob precision" do
+            specify { expect(@obj.dob.precision).to be :year  }
+          end
+          its(:dob_y) { should == '1976'}
+          its(:dob_m) { should be_nil}
+          its(:dob_d) { should be_nil}
+        end
+        describe "#dob_m = '05'" do
+          before(:each) do
+            @obj.dob_m = '05'
+          end
+          its(:dob) { should be_nil}
+          its(:dob_y) { should == '1976'}
+          its(:dob_m) { should == '05'}
+          context "after saving" do
+            before(:each) do
+              @obj.save
+            end
+            it_should_behave_like "dob getter return a Date object but a string is stored in the db"
+            describe "dob precision" do
+              specify { expect(@obj.dob.precision).to be :month  }
+            end
+            its(:dob_y) { should == '1976'}
+            its(:dob_m) { should == '05'}
+            its(:dob_d) { should be_nil}
+          end
+        end
+        
+      end
+   end
+  end
 end

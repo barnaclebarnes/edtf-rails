@@ -33,8 +33,13 @@ module EdtfRails
 
       # getters
       define_method(d) do
-        read_attribute(d) && (EDTF.parse(read_attribute(d)) || read_attribute(d)) #if the format is not EDTF compatible the string will be returned (validation call this getter and need a value)
+        # read_attribute(d) && (EDTF.parse(read_attribute(d)) || read_attribute(d)) #if the format is not EDTF compatible the string will be returned (validation call this getter and need a value)
+        EDTF.parse(read_attribute(d)) || read_attribute(d)
       end
+
+      [:y, :m, :d].each do |xx|
+        attr_accessor "#{d}_#{xx}"
+      end 
 
       # setters
       define_method("#{d}=") do |edtf_date|
@@ -43,6 +48,29 @@ module EdtfRails
       end
       
     end
+
+    # virtual attributes settings after any initialization
+    after_initialize do
+      edtf_attributes.each do |d|
+        if read_attribute(d)
+          [:y, :m, :d].each_with_index do |x,i|
+            send("#{d}_#{x}=",read_attribute(d).split('-')[i])
+          end
+        end
+      end
+    end
+
+    # virtual attributes utilization to set date before validation (they are used only if at least one of them is defined)
+    before_validation do
+      edtf_attributes.each do |d|
+        date_array = [:y, :m, :d].map{|x| send("#{d}_#{x}")}
+        if res = date_array.shift #they are used only if at least one of them is defined
+          date_array.each{|x| x.blank? ? break : (res += "-#{x}") }
+          self[d]= res
+        end
+      end
+    end
+
 
     # Include instance methods and class methods
     include EdtfRails::GettersAndSetters
