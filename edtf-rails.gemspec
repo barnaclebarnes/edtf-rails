@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "edtf-rails"
-  s.version = "0.0.0"
+  s.version = "0.2.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["masciugo"]
-  s.date = "2013-10-23"
+  s.date = "2013-11-11"
   s.description = "TODO: longer description of your gem"
   s.email = "masciugo@gmail.com"
   s.extra_rdoc_files = [
@@ -19,19 +19,27 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     ".rspec",
+    ".ruby-version",
     "Gemfile",
+    "Gemfile.lock",
     "LICENSE.txt",
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "edtf-rails.gemspec",
     "lib/edtf-rails.rb",
+    "lib/edtf-rails/edtf-rails.rb",
+    "lib/edtf-rails/getters_and_setters.rb",
+    "local_history",
     "spec/edtf-rails_spec.rb",
-    "spec/spec_helper.rb"
+    "spec/spec_helper.rb",
+    "spec/support/database.yml",
+    "spec/support/edtf_rails_test_model.rb"
   ]
   s.homepage = "http://github.com/masciugo/edtf-rails"
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.25"
+  s.rubygems_version = "1.8.23"
   s.summary = "TODO: one-line summary of your gem"
 
   if s.respond_to? :specification_version then
@@ -40,31 +48,34 @@ Gem::Specification.new do |s|
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<activerecord>, ["~> 3.2.15"])
       s.add_runtime_dependency(%q<edtf>, ["~> 1.0"])
-      s.add_development_dependency(%q<rspec>, ["~> 2.8.0"])
+      s.add_development_dependency(%q<rspec>, ["~> 2.8"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.8.7"])
       s.add_development_dependency(%q<debugger>, [">= 0"])
       s.add_development_dependency(%q<sqlite3>, [">= 0"])
+      s.add_development_dependency(%q<awesome_print>, [">= 0"])
     else
       s.add_dependency(%q<activerecord>, ["~> 3.2.15"])
       s.add_dependency(%q<edtf>, ["~> 1.0"])
-      s.add_dependency(%q<rspec>, ["~> 2.8.0"])
+      s.add_dependency(%q<rspec>, ["~> 2.8"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_dependency(%q<bundler>, ["~> 1.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.8.7"])
       s.add_dependency(%q<debugger>, [">= 0"])
       s.add_dependency(%q<sqlite3>, [">= 0"])
+      s.add_dependency(%q<awesome_print>, [">= 0"])
     end
   else
     s.add_dependency(%q<activerecord>, ["~> 3.2.15"])
     s.add_dependency(%q<edtf>, ["~> 1.0"])
-    s.add_dependency(%q<rspec>, ["~> 2.8.0"])
+    s.add_dependency(%q<rspec>, ["~> 2.8"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
     s.add_dependency(%q<bundler>, ["~> 1.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.8.7"])
     s.add_dependency(%q<debugger>, [">= 0"])
     s.add_dependency(%q<sqlite3>, [">= 0"])
+    s.add_dependency(%q<awesome_print>, [">= 0"])
   end
 end
 
