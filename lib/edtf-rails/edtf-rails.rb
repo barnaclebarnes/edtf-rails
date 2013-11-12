@@ -69,7 +69,7 @@ module EdtfRails
     before_validation do
       edtf_attributes.each do |d|
         date_array = [:y, :m, :d].map{|x| send("#{d}_#{x}")}
-        if res = date_array.shift #they are used only if at least one of them is defined
+        if (res = date_array.shift).present? #they are used only if at least one of them is defined
           date_array.each{|x| x.blank? ? break : (res += "-#{x}") }
           self[d]= res
         end
