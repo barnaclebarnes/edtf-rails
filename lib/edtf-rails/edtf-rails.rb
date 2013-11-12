@@ -31,14 +31,18 @@ module EdtfRails
 
     edtf_attributes.each do |d|
 
+      attr_accessible d.to_sym
+      
       # getters
       define_method(d) do
         # read_attribute(d) && (EDTF.parse(read_attribute(d)) || read_attribute(d)) #if the format is not EDTF compatible the string will be returned (validation call this getter and need a value)
         EDTF.parse(read_attribute(d)) || read_attribute(d)
       end
 
+      # virtual attributes dob_y, dob_m....
       [:y, :m, :d].each do |xx|
         attr_accessor "#{d}_#{xx}"
+        attr_accessible "#{d}_#{xx}".to_sym
       end 
 
       # setters
@@ -46,6 +50,7 @@ module EdtfRails
         edtf_date = edtf_date.edtf if edtf_date.is_a? Date
         write_attribute(d,edtf_date)
       end
+
       
     end
 
