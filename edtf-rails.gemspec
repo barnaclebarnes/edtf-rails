@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.23"
-  s.summary = "TODO: one-line summary of your gem"
+  s.summary = "An ActiveRecord extension to deal with Extended DateTime Format attributes"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
