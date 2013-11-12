@@ -5,12 +5,12 @@
 
 Gem::Specification.new do |s|
   s.name = "edtf-rails"
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["masciugo"]
-  s.date = "2013-11-11"
-  s.description = "TODO: longer description of your gem"
+  s.date = "2013-11-12"
+  s.description = "An ActiveRecord extension to deal with Extended DateTime Format attributes"
   s.email = "masciugo@gmail.com"
   s.extra_rdoc_files = [
     "LICENSE.txt",
@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.23"
-  s.summary = "TODO: one-line summary of your gem"
+  s.summary = "An ActiveRecord extension to deal with Extended DateTime Format attributes"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
