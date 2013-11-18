@@ -59,6 +59,18 @@ module EdtfRails
       end
     end
 
+    # virtual attributes settings after any initialization
+    after_initialize do
+      unless new_record?
+        edtf_attributes.each do |d|
+          date_array = read_attribute(d).to_s.split('-')
+          [:y, :m, :d].each_with_index do |x,i|
+            send("#{d}_#{x}=",date_array[i])
+          end
+        end
+      end
+    end
+
 
     # Include instance methods and class methods
     # include EdtfRails::GettersAndSetters
