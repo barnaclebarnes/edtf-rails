@@ -159,6 +159,12 @@ describe EdtfRailsTest::Model do
         end
       end
     end
+    context "when initialized with virtual attributes:", :wip => true do
+      context "year 1965" do
+        let(:params) { {:dob_y => "1965" } }
+        its(:dob_y) {should == '1965' }
+      end
+    end
   end
 
   describe "#dob_? atomic getters" do
