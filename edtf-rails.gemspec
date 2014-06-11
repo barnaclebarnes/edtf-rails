@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
     ".rspec",
     "Appraisals",
     "Gemfile",
-    "Gemfile.lock",
     "LICENSE.txt",
     "README.md",
     "Rakefile",
