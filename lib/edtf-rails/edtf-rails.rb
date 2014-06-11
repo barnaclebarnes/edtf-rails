@@ -1,7 +1,5 @@
 module EdtfRails
   
-  EDTF_STRING_FORMAT = /^(\d{4})$|^(\d{4}-(0[1-9]|1[012]))$|^(\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01]))$/
-
   def edtf options = {}
 
     admitted_keys = [:attributes]
@@ -14,7 +12,7 @@ module EdtfRails
 
     edtf_attributes.each do |d|
 
-      attr_accessible d.to_sym
+      attr_accessible(d.to_sym) if USE_ATTRIBUTE_ACCESSIBLE
       
       # getters
       define_method(d) do
@@ -25,7 +23,7 @@ module EdtfRails
       # virtual attributes dob_y, dob_m....
       [:y, :m, :d].each do |xx|
         attr_accessor "#{d}_#{xx}"
-        attr_accessible "#{d}_#{xx}".to_sym
+        attr_accessible("#{d}_#{xx}".to_sym) if USE_ATTRIBUTE_ACCESSIBLE
       end 
 
       # setters
@@ -70,11 +68,6 @@ module EdtfRails
         end
       end
     end
-
-
-    # Include instance methods and class methods
-    # include EdtfRails::GettersAndSetters
-    # include EdtfRails::Utils
 
   end
 

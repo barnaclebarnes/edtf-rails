@@ -49,3 +49,4 @@ pkg
 #*.rbc
 spec/support/debug.log
 spec/test.sqlite3.db
+.ruby-version

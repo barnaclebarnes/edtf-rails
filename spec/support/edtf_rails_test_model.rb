@@ -12,7 +12,7 @@ module EdtfRailsTest
 
       edtf edtf_attributes_opts
 
-      # attr_accessible :name, :dob, :dod
+      attr_accessible(:name) if EdtfRails::USE_ATTRIBUTE_ACCESSIBLE
 
       def inspect
         "#{name }"
