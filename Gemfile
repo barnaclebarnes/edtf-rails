@@ -1,6 +1,6 @@
 source "http://rubygems.org"
 # Add dependencies required to use your gem here.
-gem "activerecord"
+gem "activerecord", "~> 3.2.0"
 gem "edtf", "~> 2.0"
 
 # Add dependencies to develop your gem here.
