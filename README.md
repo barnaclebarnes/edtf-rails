@@ -1,5 +1,6 @@
 # Edtf-Rails
-----
+[![Build Status](https://travis-ci.org/masciugo/edtf-rails.svg?branch=master)](https://travis-ci.org/masciugo/edtf-rails)
+
 An ActiveRecord extension to deal with Extended DateTime Format attributes
 
 ## Description
@@ -16,11 +17,10 @@ In your model specify which attributes must be treated as EDTF:
 They needs to be of type string in the database.
 
 ## Test
-To test backward compatibility with older version of ActiveRecord (till 3.2) [appraisal](https://github.com/thoughtbot/appraisal) was used
+To test compatibility with different versions of ActiveRecord [appraisal](https://github.com/thoughtbot/appraisal) was used
 
-    appraisal rails-4 rake
-    appraisal rails-3 rake
-
+    appraisal rake
+    
 ## Contributing
 
 Comments and feedback are welcome
