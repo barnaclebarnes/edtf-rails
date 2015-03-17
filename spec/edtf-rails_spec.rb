@@ -73,15 +73,24 @@ describe EdtfRails do
 
 end
 
-EdtfRailsTest.define_test_model_class({:attributes => [:dob,:dod]})
-describe EdtfRailsTest::Model do
+describe "Test Model" do
 
   before(:each) do
-    EdtfRailsTest.define_test_model_class({:attributes => described_class.edtf_attributes}) #define model again so that the underline table get recreated with the correct columns
-    @obj = described_class.new(params)
+    EdtfRailsTest.define_test_model_class({:attributes => [:dob,:dod]}) #define model again so that the underline table get recreated with the correct columns
+    @obj = EdtfRailsTest::Model.new(params)
   end
 
   subject { @obj }
+
+  shared_examples "return a Date object but store a String in the db" do
+    describe "#dob" do
+      subject { @obj.dob }
+      specify { should be_a Date }
+    end
+    it "has a string as value in the db" do
+      expect(@obj.read_attribute(:dob)).to be_a String
+    end
+  end
 
   describe "#new" do
     context "when initialized with no params" do
@@ -94,16 +103,6 @@ describe EdtfRailsTest::Model do
         before(:each) do
           @obj.dob = new_date
           @obj.save!
-        end
-        
-        shared_examples "return a Date object but store a String in the db" do
-          describe "#dob" do
-            subject { @obj.dob }
-            specify { should be_a Date }
-          end
-          it "has a string as value in the db" do
-            expect(@obj.read_attribute(:dob)).to be_a String
-          end
         end
         
         context "when new_date is Date.new(2001,9,10)" do
@@ -167,14 +166,14 @@ describe EdtfRailsTest::Model do
     end
   end
 
-  describe "#dob_? atomic getters" do
+  shared_examples "a composed date" do |attribute|
+    let(:date_array) { subject.read_attribute(attribute).to_s.split('-') }
+    its(:dob_y) { should == date_array[0]}
+    its(:dob_m) { should == date_array[1]}
+    its(:dob_d) { should == date_array[2]}
+  end
 
-    shared_examples "a composed date" do |attribute|
-      let(:date_array) { subject.read_attribute(attribute).to_s.split('-') }
-      its(:dob_y) { should == date_array[0]}
-      its(:dob_m) { should == date_array[1]}
-      its(:dob_d) { should == date_array[2]}
-    end
+  describe "#dob_? atomic getters" do
 
     context "when initialized with dob 1995-12" do
       let(:params) { {:dob => "1995-12" } }
@@ -201,7 +200,6 @@ describe EdtfRailsTest::Model do
       end
     end
   end
-
 
   describe "#dob_?= atomic setters effect" do
     context "when initialized with no params" do
