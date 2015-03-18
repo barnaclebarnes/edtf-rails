@@ -14,6 +14,4 @@ group :development do
   gem "sqlite3"
   gem "awesome_print"
   gem "appraisal"
-  gem "byebug"
-  # gem "rcov", ">= 0"
 end

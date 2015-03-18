@@ -3,7 +3,6 @@ require 'rspec/its'
 require "active_record"
 require "logger"
 require 'awesome_print'
-require 'byebug'
 
 # this is to make absolutely sure we test this one, not the one
 # installed on the system.
