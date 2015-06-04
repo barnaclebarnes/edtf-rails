@@ -1,7 +1,8 @@
 source "http://rubygems.org"
 # Add dependencies required to use your gem here.
 gem "activerecord", "<5"
-gem "edtf", :git => "https://github.com/inukshuk/edtf-ruby.git"
+# gem "edtf", :git => "https://github.com/inukshuk/edtf-ruby.git"
+gem "edtf", "~> 2.2"
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.

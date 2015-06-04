@@ -3,7 +3,7 @@
 source "http://rubygems.org"
 
 gem "activerecord", "~> 3.2.0"
-gem "edtf", :git => "https://github.com/inukshuk/edtf-ruby.git"
+gem "edtf", "~> 2.2"
 
 group :development do
   gem "rspec", "~> 3"
