@@ -50,7 +50,7 @@ Gem::Specification.new do |s|
     s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<activerecord>, ["< 5"])
+      s.add_runtime_dependency(%q<activerecord>, ["< 6"])
       s.add_runtime_dependency(%q<edtf>, [">= 0"])
       s.add_development_dependency(%q<rspec>, ["~> 3"])
       s.add_development_dependency(%q<rspec-its>, [">= 0"])
